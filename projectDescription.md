@@ -1,0 +1,3 @@
+# Project Description  
+## Background  
+Graph Databases such as neo4J, OrientDB, titan, etc... have powerful capabilities, and specialize in not only storing vast amounts of data, but describing how the points of data are related. However, a common issue with graph databases is the ways (or lack thereof) to visualize this connected data. Nic McPhee has used graph databases to visualize Evolutionary Computation runs in order to find inefficiencies in EC algorithms. This work has used static pdf's to visualize runs, but these can be massive and hard to read. In many cases just visualizing a subspace of an EC graph, and being able to interact with it may allow better insights into the run.
