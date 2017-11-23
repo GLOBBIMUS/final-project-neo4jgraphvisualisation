@@ -9,10 +9,10 @@ Ideally, our project would use some sort of js/clojurescript library to create i
 ### WHO  
 * Leonid Scott:
   * backend setup (15 points)
-* Shawn saliyev:
+* Shawn Saliyev:
   * database setup (15 points)
 * Shared:
-  * fronend setup (5 points)
+  * frontend setup (5 points)
   * apply js/clojurescript library in frontend (10 points)
   * design REST interface (5 points)
   * make frontend to query database (10 points)
