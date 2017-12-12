@@ -17,7 +17,25 @@ text {
   cursor: pointer;
 }
 
+td, th {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+  width: 300px;
+}
+
+th{
+  background: #FFA56E;
+}
+
+#Individual{
+  position: fixed;
+  top: 5%;
+  left: 65%;
+}
+
 #svg-canvas{
-  top: 80%;
-  left: 60%;
+  position: absolute;
+  top: 50%;
+  left: 10%;
 }

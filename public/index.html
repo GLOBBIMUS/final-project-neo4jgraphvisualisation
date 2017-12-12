@@ -18,11 +18,31 @@
 </head>
 <body ng-app="graph">
   <div id="graph" ng-controller="mainCtrl">
+    <table id="Individual">
+      <tr>
+        <th>Identity</th>
+        <th>{{individual.identity}}</th>
+      </tr>
+      <tr>
+        <th>Label</th>
+        <th>{{individual.label}}</th>
+      </tr>
+      <tr>
+        <th>Generation</th>
+        <th>{{individual.generation}}</th>
+      </tr>
+      <tr>
+        <th>Location</th>
+        <th>{{individual.location}}</th>
+      </tr>
+      <tr>
+        <th>UUID</th>
+        <th>{{individual.uuid}}</th>
+      </tr>
+    </table>
   </div>
 
-  <svg id="svg-canvas" width=1000 height=2000 top=800>
-    <g transform="translate(400px, 500)" />
-  </svg>
+  <svg id="svg-canvas" width=1000 height=2000 top=800></svg>
 
 </body>
 </html>

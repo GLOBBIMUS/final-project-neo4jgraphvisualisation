@@ -4,8 +4,10 @@ angular.module('graph',[])
 .constant('apiUrl','http://localhost:1917');
 
 
-function MainCtrl($scope,graphApi){
-  var g = new dagreD3.graphlib.Graph().setGraph({})
+function MainCtrl($anchorScroll,$location,$scope,graphApi){
+$scope.individual = {};
+
+  var g = new dagreD3.graphlib.Graph({compound: true}).setGraph({})
   .setDefaultEdgeLabel(function () {
     return {};
   });
@@ -15,15 +17,10 @@ function MainCtrl($scope,graphApi){
   inner = svg.append("g");
 
 
-
-  var populateD3 = function() {
-
-  }
-
   var renderAgain = function() {
     g.nodes().forEach(function (v) {
       var node = g.node(v);
-      node.rx = node.ry = 5;
+      node.rx = node.ry = 10;
     });
     g.edges().forEach(function (e) {
       var edge = g.edge(e.v, e.w);
@@ -34,19 +31,24 @@ function MainCtrl($scope,graphApi){
       "scale(" + d3.event.scale + ")");
     });
     render(inner, g);
-    var initialScale = 1.0;
+    var initialScale = 1.3;
     zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
     .scale(initialScale)
     .event(svg);
-    svg.attr("height", g.graph().height * initialScale + 40);
+    svg.attr("height", g.graph().height * initialScale * 40);
 
 
 
     svg.selectAll("g.node")
     .on("dblclick", function(d){
-      console.log(d);
       getAncestors(d);
+    })
+    .on("click", function(d){
+      summarizeIndividual(d);
     });
+
+    // svg.selectAll("g.node")
+    // .on("click", function(d){summarizeIndividual(d);});
 
     svg.selectAll("g.node rect")
     .attr("id", function (d) {
@@ -172,16 +174,20 @@ function MainCtrl($scope,graphApi){
       y: y + sy
     };
   }
-  /*
-  When we get new json from the api:
-  1) Call populateD3 with new json
-  2) Render Again.
-  */
+
+
   var lookUpTable = {};
+
+  function summarizeIndividual(individual_id){
+    $scope.$apply(function(){
+    $scope.individual = lookUpTable[individual_id];
+  })
+  }
 
   function makeNode(id, label) {
     g.setNode(id, {
-      label: label
+      label: label,
+      style: "fill: #afa"
     });
   }
 
@@ -190,7 +196,6 @@ function MainCtrl($scope,graphApi){
   }
 
   function getNodes(data, child_id) {
-    console.log(data);
     for(var i = 0; i < data.length; i++) {
       parent_identity = data[i].identity;
       if(lookUpTable[parent_identity] == null) {
@@ -204,13 +209,12 @@ function MainCtrl($scope,graphApi){
   }
 
   function getAncestors(child_id){
-    console.log(child_id);
     var child_uuid = lookUpTable[child_id].uuid;
     graphApi.getAncestors(child_uuid)
     .success(function(data){
       getNodes(data, child_id);
-      console.log(lookUpTable);
       renderAgain();
+
     })
     .error(function(){console.log("An error occured when tried to get ancestors");});
   }
@@ -220,7 +224,6 @@ function MainCtrl($scope,graphApi){
     $scope.errorMessage='';
     graphApi.getWinners()
     .success(function(data){
-      console.log(data[0].generation);
       getNodes(data, null);
       renderAgain();
       $scope.winners=data;
