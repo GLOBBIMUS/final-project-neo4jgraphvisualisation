@@ -173,6 +173,7 @@ function MainCtrl($scope,graphApi){
   1) Call populateD3 with new json
   2) Render Again.
   */
+var lookUpTable = {};
 
   function makeNode(id, label) {
     g.setNode(id, {
@@ -180,9 +181,20 @@ function MainCtrl($scope,graphApi){
     });
   }
 
-  function getNodes(data) {
+  function makeEdge(parent_id, child_id) {
+    g.setEdge(parent_id, child_id);
+  }
+
+  function getNodes(data, child_id) {
     for(i = 0; i < data.length; i++) {
-      makeNode(data[i].identity, data[i].label);
+      parent_identity = data[i].identity;
+      if(lookUpTable[parent_identity] == null) {
+        makeNode(parent_identity, data[i].label);
+        lookUpTable[parent_identity] = data[i];
+      }
+      if(child_id != null) {
+        makeEdge(parent_identity, child_id);
+      }
     }
   }
 
@@ -190,7 +202,7 @@ function MainCtrl($scope,graphApi){
     $scope.errorMessage='';
     graphApi.getWinners()
     .success(function(data){
-      getNodes(data);
+      getNodes(data, null);
       renderAgain();
       $scope.winners=data;
     })
