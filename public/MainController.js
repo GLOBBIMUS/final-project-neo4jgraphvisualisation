@@ -17,81 +17,6 @@ function MainCtrl($scope,graphApi){
 
   var populateD3 = function() {
 
-    /*
-    WILL TURN INTO PARSING FUNCTION
-    */
-
-    //Adding Nodes
-    //adding nodes and edges
-    g.setNode(0, {
-      label: "dads dad",
-    });
-    g.setNode(1, {
-      label: "dads ma",
-    });
-    g.setNode(2, {
-      label: "dad",
-    });
-    g.setNode(3, {
-      label: "mom",
-    });
-    g.setNode(4, {
-      label: "moms dad",
-    });
-    g.setNode(5, {
-      label: "moms ma",
-    });
-    g.setNode(6, {
-      label: "me",
-    });
-    g.setNode(7, {
-      label: "wife",
-    });
-    g.setNode(8, {
-      label: "child1",
-    });
-    g.setNode(9, {
-      label: "child2",
-    });
-    g.setNode(10, {
-      label: "child3",
-    });
-    g.setNode(11, {
-      label: "child4",
-    });
-    g.setNode(12, {
-      label: "childschild",
-    });
-    g.setNode(13, {
-      label: "childs child child",
-    });
-    g.setNode(14, {
-      label: "childs child bro)))ппц",
-    });
-    g.setNode(17,{
-      label:"hey"
-    });
-
-    // Adding Edges
-    g.setEdge(0, 2);
-    g.setEdge(1, 2);
-    g.setEdge(4, 3);
-    g.setEdge(5, 3);
-    g.setEdge(2, 6);
-    g.setEdge(3, 6);
-    g.setEdge(6, 8);
-    g.setEdge(7, 8);
-    g.setEdge(6, 9);
-    g.setEdge(7, 9);
-    g.setEdge(6, 10);
-    g.setEdge(7, 10);
-    g.setEdge(6, 11);
-    g.setEdge(7, 11);
-    g.setEdge(9, 12);
-    g.setEdge(12, 13);
-    g.setEdge(12, 14);
-    g.setEdge(14,17);
-
   }
 
   var renderAgain = function() {
@@ -114,7 +39,7 @@ function MainCtrl($scope,graphApi){
     .event(svg);
     svg.attr("height", g.graph().height * initialScale + 40);
     svg.selectAll("g.node")
-    .on("click", function(d){
+    .on("mouseover", function(d){
       console.log(d);
     });
 
@@ -243,21 +168,30 @@ function MainCtrl($scope,graphApi){
     };
   }
 
-  populateD3();
-  renderAgain();
-
   /*
   When we get new json from the api:
   1) Call populateD3 with new json
   2) Render Again.
   */
 
-  $scope.winners;
+  function makeNode(id, label) {
+    g.setNode(id, {
+      label: label
+    });
+  }
+
+  function getNodes(data) {
+    for(i = 0; i < data.length; i++) {
+      makeNode(data[i].identity, data[i].label);
+    }
+  }
 
   function getWinners(){
     $scope.errorMessage='';
     graphApi.getWinners()
     .success(function(data){
+      getNodes(data);
+      renderAgain();
       $scope.winners=data;
     })
     .error(function () {
