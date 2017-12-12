@@ -113,6 +113,8 @@ svg.attr("height", g.graph().height * initialScale + 40);
 //code for drag
 
 //give IDs to each of the nodes so that they can be accessed
+
+//Added by shawn and I. // Now nodes are clickable
 svg.selectAll("g.node")
 .on("click", function(d){
   console.log(d);
@@ -246,6 +248,10 @@ function intersectRect(node, point) {
     };
 }
 
+// Shawn and I added this as a test.
+/*
+            EVERYTHING BELOW THIS LINE WAS ADDED AS A TEST
+*/
 g.setNode(15, {
     label: "dads dad",
 });
