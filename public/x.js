@@ -1,162 +1,181 @@
+// Creates graph instance, and addes nodes and edges.
+// WILL TAKE IN DATASTRUCTURE
+var populateD3 = function() {
+    // create graph instance
+    var g = new dagreD3.graphlib.Graph().setGraph({})
+        .setDefaultEdgeLabel(function () {
+        return {};
+    });
 
-var s = function(){
-var g = new dagreD3.graphlib.Graph().setGraph({})
-    .setDefaultEdgeLabel(function () {
-    return {};
-});
+    /*
+        WILL TURN INTO PARSING FUNCTION
+    */
 
-//adding nodes and edges
+    //Adding Nodes
+    //adding nodes and edges
+    g.setNode(0, {
+        label: "dads dad",
+    });
+    g.setNode(1, {
+        label: "dads ma",
+    });
+    g.setNode(2, {
+        label: "dad",
+    });
+    g.setNode(3, {
+        label: "mom",
+    });
+    g.setNode(4, {
+        label: "moms dad",
+    });
+    g.setNode(5, {
+        label: "moms ma",
+    });
+    g.setNode(6, {
+        label: "me",
+    });
+    g.setNode(7, {
+        label: "wife",
+    });
+    g.setNode(8, {
+        label: "child1",
+    });
+    g.setNode(9, {
+        label: "child2",
+    });
+    g.setNode(10, {
+        label: "child3",
+    });
+    g.setNode(11, {
+        label: "child4",
+    });
+    g.setNode(12, {
+        label: "childschild",
+    });
+    g.setNode(13, {
+        label: "childs child child",
+    });
+    g.setNode(14, {
+        label: "childs child bro)))ппц",
+    });
 
-g.setNode(0, {
-    label: "dads dad",
-});
-g.setNode(1, {
-    label: "dads ma",
-});
-g.setNode(2, {
-    label: "dad",
-});
-g.setNode(3, {
-    label: "mom",
-});
-g.setNode(4, {
-    label: "moms dad",
-});
-g.setNode(5, {
-    label: "moms ma",
-});
-g.setNode(6, {
-    label: "me",
-});
-g.setNode(7, {
-    label: "wife",
-});
-g.setNode(8, {
-    label: "child1",
-});
-g.setNode(9, {
-    label: "child2",
-});
-g.setNode(10, {
-    label: "child3",
-});
-g.setNode(11, {
-    label: "child4",
-});
-g.setNode(12, {
-    label: "childschild",
-});
-g.setNode(13, {
-    label: "childs child child",
-});
-g.setNode(14, {
-    label: "childs child bro)))ппц",
-});
+    // Adding Edges
+    g.setEdge(0, 2);
+    g.setEdge(1, 2);
+    g.setEdge(4, 3);
+    g.setEdge(5, 3);
+    g.setEdge(2, 6);
+    g.setEdge(3, 6);
+    g.setEdge(6, 8);
+    g.setEdge(7, 8);
+    g.setEdge(6, 9);
+    g.setEdge(7, 9);
+    g.setEdge(6, 10);
+    g.setEdge(7, 10);
+    g.setEdge(6, 11);
+    g.setEdge(7, 11);
+    g.setEdge(9, 12);
+    g.setEdge(12, 13);
+    g.setEdge(12, 14);
+
+    // Configure Nodes and edges
+
+    // Round the corners of the nodes
+    g.nodes().forEach(function (v) {
+        var node = g.node(v);
+        node.rx = node.ry = 5;
+    });
+
+    //makes the lines smooth
+    g.edges().forEach(function (e) {
+        var edge = g.edge(e.v, e.w);
+        edge.lineInterpolate = 'basis';
+    });
+
+    stageTwo(g);
+}
+
+var stageTwo = function(g) {
+    // Create the renderer
+    var render = new dagreD3.render();
+
+    // Set up an SVG group so that we can translate the final graph.
+    var svg = d3.select("svg"),
+        inner = svg.append("g");
+
+    // Set up zoom support
+    var zoom = d3.behavior.zoom().on("zoom", function () {
+        inner.attr("transform", "translate(" + d3.event.translate + ")" +
+            "scale(" + d3.event.scale + ")");
+    });
+    svg.call(zoom);
+
+    // Run the renderer. This is what draws the final graph.
+    render(inner, g);
+
+    // Center the graph
+    var initialScale = 1.0;
+    zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
+        .scale(initialScale)
+        .event(svg);
+    svg.attr("height", g.graph().height * initialScale + 40);
+
+    stageThree(svg, g);
+}
+
+var stageThree = function(svg, g) {
+    //code for drag
+
+    //give IDs to each of the nodes so that they can be accessed
+
+    //Added by shawn and I. // Now nodes are clickable
+    svg.selectAll("g.node")
+    .on("click", function(d){
+      console.log(d);
+    });
+
+    svg.selectAll("g.node rect")
+        .attr("id", function (d) {
+        return "node" + d;
+    });
+    svg.selectAll("g.edgePath path")
+        .attr("id", function (e) {
+        return e.v + "-" + e.w;
+    });
+    svg.selectAll("g.edgeLabel g")
+        .attr("id", function (e) {
+        return 'label_'+e.v + "-" + e.w;
+    });
+
+    g.nodes().forEach(function (v) {
+        var node = g.node(v);
+        node.customId = "node" + v;
+    })
+    g.edges().forEach(function (e) {
+        var edge = g.edge(e.v, e.w);
+        edge.customId = e.v + "-" + e.w
+    });
 
 
-g.setEdge(0, 2);
-g.setEdge(1, 2);
-g.setEdge(4, 3);
-g.setEdge(5, 3);
-g.setEdge(2, 6);
-g.setEdge(3, 6);
-g.setEdge(6, 8);
-g.setEdge(7, 8);
-g.setEdge(6, 9);
-g.setEdge(7, 9);
-g.setEdge(6, 10);
-g.setEdge(7, 10);
-g.setEdge(6, 11);
-g.setEdge(7, 11);
-g.setEdge(9, 12);
-g.setEdge(12, 13);
-g.setEdge(12, 14);
+    var nodeDrag = d3.behavior.drag()
+        .on("dragstart", dragstart)
+        .on("drag", dragmove);
+
+    var edgeDrag = d3.behavior.drag()
+        .on("dragstart", dragstart)
+        .on('drag', function (d) {
+        translateEdge(g.edge(d.v, d.w), d3.event.dx, d3.event.dy);
+        $('#' + g.edge(d.v, d.w).customId).attr('d', calcPoints(d));
+    });
+
+    nodeDrag.call(svg.selectAll("g.node"));
+    edgeDrag.call(svg.selectAll("g.edgePath"));
+}
 
 
-// Round the corners of the nodes
-g.nodes().forEach(function (v) {
-    var node = g.node(v);
-    node.rx = node.ry = 5;
-});
-
-//makes the lines smooth
-g.edges().forEach(function (e) {
-    var edge = g.edge(e.v, e.w);
-    edge.lineInterpolate = 'basis';
-});
-
-// Create the renderer
-var render = new dagreD3.render();
-
-// Set up an SVG group so that we can translate the final graph.
-var svg = d3.select("svg"),
-    inner = svg.append("g");
-
-// Set up zoom support
-var zoom = d3.behavior.zoom().on("zoom", function () {
-    inner.attr("transform", "translate(" + d3.event.translate + ")" +
-        "scale(" + d3.event.scale + ")");
-});
-svg.call(zoom);
-
-// Run the renderer. This is what draws the final graph.
-render(inner, g);
-
-// Center the graph
-var initialScale = 1.0;
-zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-    .scale(initialScale)
-    .event(svg);
-svg.attr("height", g.graph().height * initialScale + 40);
-
-
-//code for drag
-
-//give IDs to each of the nodes so that they can be accessed
-
-//Added by shawn and I. // Now nodes are clickable
-svg.selectAll("g.node")
-.on("click", function(d){
-  console.log(d);
-});
-
-svg.selectAll("g.node rect")
-    .attr("id", function (d) {
-    return "node" + d;
-});
-svg.selectAll("g.edgePath path")
-    .attr("id", function (e) {
-    return e.v + "-" + e.w;
-});
-svg.selectAll("g.edgeLabel g")
-    .attr("id", function (e) {
-    return 'label_'+e.v + "-" + e.w;
-});
-
-g.nodes().forEach(function (v) {
-    var node = g.node(v);
-    node.customId = "node" + v;
-})
-g.edges().forEach(function (e) {
-    var edge = g.edge(e.v, e.w);
-    edge.customId = e.v + "-" + e.w
-});
-
-
-var nodeDrag = d3.behavior.drag()
-    .on("dragstart", dragstart)
-    .on("drag", dragmove);
-
-var edgeDrag = d3.behavior.drag()
-    .on("dragstart", dragstart)
-    .on('drag', function (d) {
-    translateEdge(g.edge(d.v, d.w), d3.event.dx, d3.event.dy);
-    $('#' + g.edge(d.v, d.w).customId).attr('d', calcPoints(d));
-});
-
-nodeDrag.call(svg.selectAll("g.node"));
-edgeDrag.call(svg.selectAll("g.edgePath"));
-
+/*
+Helper Methods
+*/
 function dragstart(d) {
     d3.event.sourceEvent.stopPropagation();
 }
@@ -247,64 +266,3 @@ function intersectRect(node, point) {
         y: y + sy
     };
 }
-
-// Shawn and I added this as a test.
-/*
-            EVERYTHING BELOW THIS LINE WAS ADDED AS A TEST
-*/
-g.setNode(15, {
-    label: "dads dad",
-});
-g.setEdge(14, 15);
-
-render(inner, g);
-
-// Center the graph
-var initialScale = 1.0;
-zoom.translate([(svg.attr("width") - g.graph().width * initialScale) / 2, 20])
-    .scale(initialScale)
-    .event(svg);
-svg.attr("height", g.graph().height * initialScale + 40);
-
-
-//code for drag
-
-//give IDs to each of the nodes so that they can be accessed
-svg.selectAll("g.node rect")
-    .attr("id", function (d) {
-    return "node" + d;
-});
-svg.selectAll("g.edgePath path")
-    .attr("id", function (e) {
-    return e.v + "-" + e.w;
-});
-svg.selectAll("g.edgeLabel g")
-    .attr("id", function (e) {
-    return 'label_'+e.v + "-" + e.w;
-});
-
-g.nodes().forEach(function (v) {
-    var node = g.node(v);
-    node.customId = "node" + v;
-})
-g.edges().forEach(function (e) {
-    var edge = g.edge(e.v, e.w);
-    edge.customId = e.v + "-" + e.w
-});
-
-
-var nodeDrag = d3.behavior.drag()
-    .on("dragstart", dragstart)
-    .on("drag", dragmove);
-
-var edgeDrag = d3.behavior.drag()
-    .on("dragstart", dragstart)
-    .on('drag', function (d) {
-    translateEdge(g.edge(d.v, d.w), d3.event.dx, d3.event.dy);
-    $('#' + g.edge(d.v, d.w).customId).attr('d', calcPoints(d));
-});
-
-nodeDrag.call(svg.selectAll("g.node"));
-edgeDrag.call(svg.selectAll("g.edgePath"));
-}
-s();
