@@ -6,10 +6,12 @@ app.use(express.static(__dirname + '/public'));
 const neo4j = require('neo4j-driver').v1;
 
 const driver = neo4j.driver("bolt://127.0.0.1:7687", neo4j.auth.basic("neo4j", "password"));
-const session = driver.session();
+const session = driver.session(); //connection
 
-
-app.get("/getWinners",function(req,res){ // handles the /getWinners API. Gets Individuals whose TotalError is 0
+/*
+ * handles the /getWinners API. Gets Individuals whose TotalError is 0
+ */
+app.get("/getWinners",function(req,res){
   const actorPromise = session.run(
     "MATCH(n: Individual) - [HasTotalError] -> (x: TotalError {TotalError:  0 }) RETURN n LIMIT 100;"
   ).then(function(result) {
@@ -20,8 +22,10 @@ app.get("/getWinners",function(req,res){ // handles the /getWinners API. Gets In
   });
 });
 
-
-app.get("/getAncestors",function(req,res){ // handles the /getWinners API. Gets Individuals whose TotalError is 0
+/*
+ * This API queries the neo4j to get the ancestors of the specific individual
+ */
+app.get("/getAncestors",function(req,res){
   var child_uuid = req.param('child_uuid');
   var cypher =   "MATCH (n: Individual)-[: ParentOf]->(i: Individual {uuid: \'"+ child_uuid +"\'}) RETURN n;"
   console.log(cypher);
@@ -35,7 +39,10 @@ app.get("/getAncestors",function(req,res){ // handles the /getWinners API. Gets 
   });
 });
 
-
+/*
+ * The following two methods are made for trasforming the received result from neo4j.
+ */
+ 
 function packageFields(result) {
   var fields = [];
   for(i = 0; i < result.records.length; i++) {
