@@ -16,3 +16,8 @@ text {
 .node {
   cursor: pointer;
 }
+
+#svg-canvas{
+  top: 80%;
+  left: 60%;
+}
