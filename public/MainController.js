@@ -15,6 +15,7 @@ function MainCtrl($scope,graphApi){
   inner = svg.append("g");
 
 
+
   var populateD3 = function() {
 
   }
@@ -38,9 +39,13 @@ function MainCtrl($scope,graphApi){
     .scale(initialScale)
     .event(svg);
     svg.attr("height", g.graph().height * initialScale + 40);
+
+
+
     svg.selectAll("g.node")
-    .on("mouseover", function(d){
+    .on("dblclick", function(d){
       console.log(d);
+      getAncestors(d);
     });
 
     svg.selectAll("g.node rect")
@@ -167,13 +172,12 @@ function MainCtrl($scope,graphApi){
       y: y + sy
     };
   }
-
   /*
   When we get new json from the api:
   1) Call populateD3 with new json
   2) Render Again.
   */
-var lookUpTable = {};
+  var lookUpTable = {};
 
   function makeNode(id, label) {
     g.setNode(id, {
@@ -186,10 +190,11 @@ var lookUpTable = {};
   }
 
   function getNodes(data, child_id) {
-    for(i = 0; i < data.length; i++) {
+    console.log(data);
+    for(var i = 0; i < data.length; i++) {
       parent_identity = data[i].identity;
       if(lookUpTable[parent_identity] == null) {
-        makeNode(parent_identity, data[i].label);
+        makeNode(parent_identity, data[i].generation + "");
         lookUpTable[parent_identity] = data[i];
       }
       if(child_id != null) {
@@ -198,10 +203,24 @@ var lookUpTable = {};
     }
   }
 
+  function getAncestors(child_id){
+    console.log(child_id);
+    var child_uuid = lookUpTable[child_id].uuid;
+    graphApi.getAncestors(child_uuid)
+    .success(function(data){
+      getNodes(data, child_id);
+      console.log(lookUpTable);
+      renderAgain();
+    })
+    .error(function(){console.log("An error occured when tried to get ancestors");});
+  }
+
+
   function getWinners(){
     $scope.errorMessage='';
     graphApi.getWinners()
     .success(function(data){
+      console.log(data[0].generation);
       getNodes(data, null);
       renderAgain();
       $scope.winners=data;
@@ -217,6 +236,10 @@ function graphApi($http,apiUrl){
   return{
     getWinners: function(){
       var url = apiUrl + '/getWinners';
+      return $http.get(url);
+    },
+    getAncestors: function(uuid){
+      var url = apiUrl + '/getAncestors?child_uuid='+uuid;
       return $http.get(url);
     }
   }

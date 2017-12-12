@@ -21,6 +21,21 @@ app.get("/getWinners",function(req,res){ // handles the /getWinners API. Gets In
 });
 
 
+app.get("/getAncestors",function(req,res){ // handles the /getWinners API. Gets Individuals whose TotalError is 0
+  var child_uuid = req.param('child_uuid');
+  var cypher =   "MATCH (n: Individual)-[: ParentOf]->(i: Individual {uuid: \'"+ child_uuid +"\'}) RETURN n;"
+  console.log(cypher);
+  const ancestorsPromise = session.run(
+  cypher
+  ).then(function(result) {
+    var fields = packageFields(result);
+    res.send(fields);
+    session.close();
+    driver.close();
+  });
+});
+
+
 function packageFields(result) {
   var fields = [];
   for(i = 0; i < result.records.length; i++) {
