@@ -42,10 +42,6 @@ app.get("/getAncestors",function(req,res){
 /*
  * This method extracts the data that we need from the recieved result.
  */
-<<<<<<< current
-=======
-
->>>>>>> before discard
 function packageFields(result) {
   var fields = [];
   for(i = 0; i < result.records.length; i++) {
