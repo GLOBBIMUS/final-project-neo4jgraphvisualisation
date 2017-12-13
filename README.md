@@ -1,4 +1,4 @@
-Look in the *documentation* for Final Summary.
+Look in the *documentation* for Final Summary, and presentation slides.
 
 # Final Project (100 points total)
 
