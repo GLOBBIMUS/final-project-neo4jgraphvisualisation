@@ -1,3 +1,5 @@
+Look in the *documentation* for Final Summary.
+
 # Final Project (100 points total)
 
 Your Final Project has the following steps:
@@ -5,8 +7,8 @@ Your Final Project has the following steps:
 * Choose group members  (3 pts)
 * Schedule your time    (2 pts)
 * Design the project    (10 pts)
-* Implement the project (50 pts) 
-* Present a summary of your work to the class and evaluate other group's presentations (25 pts) 
+* Implement the project (50 pts)
+* Present a summary of your work to the class and evaluate other group's presentations (25 pts)
 * Final Summary         (10 pts)
 
 ## Choose group members (3 points)
@@ -40,7 +42,7 @@ You can also **describe a database technology** that we don't cover (or that we 
 * An introduction to MUMPS (a medical database language and system)
 * Database aspects of arcGIS
 
-You should provide a reasonable summary of what you will do/cover but it does not need to be exhaustive at the very beginning 
+You should provide a reasonable summary of what you will do/cover but it does not need to be exhaustive at the very beginning
 (I expect this document to evolve over time).  
 
 Points will be assigned for
@@ -50,10 +52,10 @@ Points will be assigned for
 
 ### WHO (5 points)
 
-This is the section where you **detail each team member's responsibilities**.  This is the contract that you are making with your 
+This is the section where you **detail each team member's responsibilities**.  This is the contract that you are making with your
 teammates and each person's ability to live up to their obligations will, in part, determine their final grade. (more on that below)
 
-You should come up with 50 points worth of activities for each person (it's okay for some tasks to be shared).  **You** are 
+You should come up with 50 points worth of activities for each person (it's okay for some tasks to be shared).  **You** are
 deciding the criterion by which I will judge your project and your participation in the project.  You may change details as you work
 on your project and your understanding evolves, but only with the approval of your teammates and myself.
 
@@ -61,7 +63,7 @@ If your project is applicationm based, then your points and activites will revol
 You will present your application to the class in the Presentation stage of the project (the presentation stage is
 a separate source of points-- so don't assign yourself points for presenting.)
 
-If your project is explanatory based, then your points and activities will revolve around producing a written explanation of your 
+If your project is explanatory based, then your points and activities will revolve around producing a written explanation of your
 desired technology HOWEVER, you may also choose to gain points for in-class tutorials where you teach aspects of your technology.  
 These tutorials are in addition to your overall presentation (which is a seperate source of points.)
 
@@ -72,7 +74,7 @@ Is the document easy to understand and complete?  Is it free of spelling and gra
 **DEADLINE:** Before Thanksgiving break
 
 
-## Implement the Project (50 points) 
+## Implement the Project (50 points)
 
 This is where you actually make the project a reality.  The 50 points are from your design document subject to my approval.  
 
@@ -86,7 +88,7 @@ The presentation sohould be 5 minutes for each person in the group-- although on
 * informativeness
 * class response
 
-Be sure to say 
+Be sure to say
 
 * What you did
 * Why you did it
@@ -113,10 +115,9 @@ The group portion is informal and should not be particularly long.  Include this
 * Potential for future work
 * Overall reaction
 
-The individual portion is where each person lists their reponsibilities from the design document and discusses whether or 
+The individual portion is where each person lists their reponsibilities from the design document and discusses whether or
 not they lived up to their end of the bargain.  Did duties change?  If so, in what way?  The individual report is  **also**
 where you comment on the contributions of your team-mates.  Did your team-mates live up to their end of the bargain or not.  
 If **not** this is the place to include those details.  It would be a good idea to talk to me earlier if you feel somebody on your team is not doing their share... but this is the place to make your voice heard formally.  **Do NOT** include this in the repository-- instead print up a copy and hand it in to me.
 
 **READ THIS CAREFULLY** Not turning in your final summary means you can't do better than C.
-
