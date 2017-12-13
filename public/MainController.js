@@ -5,8 +5,12 @@ angular.module('graph',[])
 
 
 function MainCtrl($anchorScroll,$location,$scope,graphApi){
-$scope.individual = {};
+  $scope.individual = {};
 
+
+  /*
+  * The following code (untill line 176) is based on the code that we found on "http://jsfiddle.net/egfx43hs/13/"
+  */
   var g = new dagreD3.graphlib.Graph({compound: true}).setGraph({})
   .setDefaultEdgeLabel(function () {
     return {};
@@ -37,8 +41,6 @@ $scope.individual = {};
     .event(svg);
     svg.attr("height", g.graph().height * initialScale * 40);
 
-
-
     svg.selectAll("g.node")
     .on("dblclick", function(d){
       getAncestors(d);
@@ -46,9 +48,6 @@ $scope.individual = {};
     .on("click", function(d){
       summarizeIndividual(d);
     });
-
-    // svg.selectAll("g.node")
-    // .on("click", function(d){summarizeIndividual(d);});
 
     svg.selectAll("g.node rect")
     .attr("id", function (d) {
@@ -175,15 +174,17 @@ $scope.individual = {};
     };
   }
 
-
+  // The key in lookUp table would be the id of the Individual and the value is Individual iself
   var lookUpTable = {};
 
+  // Heleper function extracts Individual from the look up table
   function summarizeIndividual(individual_id){
     $scope.$apply(function(){
-    $scope.individual = lookUpTable[individual_id];
-  })
+      $scope.individual = lookUpTable[individual_id];
+    })
   }
 
+ // Creates node based on id and label in the dagre-d3 graph
   function makeNode(id, label) {
     g.setNode(id, {
       label: label,
@@ -191,10 +192,12 @@ $scope.individual = {};
     });
   }
 
+  // Creates an edge between parent and child in the dagre-d3 graph
   function makeEdge(parent_id, child_id) {
     g.setEdge(parent_id, child_id);
   }
 
+  // Ocne parents are received we call makeNode() and makeEdge() for each of them
   function getNodes(data, child_id) {
     for(var i = 0; i < data.length; i++) {
       parent_identity = data[i].identity;
@@ -208,6 +211,7 @@ $scope.individual = {};
     }
   }
 
+  // Makes API call to the server to get ancestors of the specific node
   function getAncestors(child_id){
     var child_uuid = lookUpTable[child_id].uuid;
     graphApi.getAncestors(child_uuid)
@@ -219,7 +223,10 @@ $scope.individual = {};
     .error(function(){console.log("An error occured when tried to get ancestors");});
   }
 
-
+  /*
+   * This function called evrytime the page is loaded
+   * Makes the API request to get the Individual whose total error is 0
+   */
   function getWinners(){
     $scope.errorMessage='';
     graphApi.getWinners()
@@ -235,6 +242,8 @@ $scope.individual = {};
   getWinners();
 
 }
+
+
 function graphApi($http,apiUrl){
   return{
     getWinners: function(){

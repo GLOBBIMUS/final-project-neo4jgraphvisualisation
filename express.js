@@ -1,10 +1,11 @@
+// Using express similar to lab 9
 var express=require('express'),
 app = express(),
 port = process.env.PORT || 1917;
 app.use(express.static(__dirname + '/public'));
 
+// Setting up the connection to the neo4j by using "neo4j-driver"
 const neo4j = require('neo4j-driver').v1;
-
 const driver = neo4j.driver("bolt://127.0.0.1:7687", neo4j.auth.basic("neo4j", "password"));
 const session = driver.session(); //connection
 
@@ -28,7 +29,6 @@ app.get("/getWinners",function(req,res){
 app.get("/getAncestors",function(req,res){
   var child_uuid = req.param('child_uuid');
   var cypher =   "MATCH (n: Individual)-[: ParentOf]->(i: Individual {uuid: \'"+ child_uuid +"\'}) RETURN n;"
-  console.log(cypher);
   const ancestorsPromise = session.run(
   cypher
   ).then(function(result) {
@@ -40,21 +40,25 @@ app.get("/getAncestors",function(req,res){
 });
 
 /*
- * The following two methods are made for trasforming the received result from neo4j.
+ * This method extracts the data that we need from the recieved result.
  */
- 
+<<<<<<< current
+=======
+
+>>>>>>> before discard
 function packageFields(result) {
   var fields = [];
   for(i = 0; i < result.records.length; i++) {
     var individual = result.records[i]._fields[0];
     var transformedIndividual = transform(individual);
-    console.log(transformedIndividual);
     fields[i] = transformedIndividual;
   }
-  console.log(fields);
   return fields;
 }
 
+/*
+ * Helper method, transforms data that we need into appropriate format
+ */
 function transform(individual){
   var transformedIndividual = {};
   transformedIndividual.identity = individual.identity.low;
